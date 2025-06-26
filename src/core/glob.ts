@@ -5,6 +5,14 @@ import { globSync } from 'tinyglobby';
 import { resolveImportPath } from '../shared';
 import type { ParsedAutoRouterOptions, ResolvedGlob } from '../types';
 
+/**
+ * Resolve all page globs from multiple page directories
+ *
+ * 从多个页面目录解析所有页面的 glob 匹配
+ *
+ * @param options - The parsed router options containing page directories and patterns
+ * @returns Array of resolved glob objects with file information
+ */
 export async function resolveGlobs(options: ParsedAutoRouterOptions) {
   const { cwd, pageDir, pageInclude, pageExclude } = options;
 
@@ -36,6 +44,16 @@ export async function resolveGlobs(options: ParsedAutoRouterOptions) {
   return globs;
 }
 
+/**
+ * Resolve a single glob pattern to file paths and import paths
+ *
+ * 解析单个 glob 模式到文件路径和导入路径
+ *
+ * @param glob - The glob pattern to resolve
+ * @param pageDir - The page directory to resolve from
+ * @param options - The options containing cwd and alias configuration
+ * @returns The resolved glob object without inode information
+ */
 export function resolveGlob(glob: string, pageDir: string, options: Pick<ParsedAutoRouterOptions, 'cwd' | 'alias'>) {
   const { cwd, alias } = options;
 
