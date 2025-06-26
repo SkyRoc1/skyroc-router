@@ -1,8 +1,9 @@
-import type { AutoRouterOptions, ParsedAutoRouterOptions, ResolvedGlob } from '@/types';
+import type { AutoRouterNode, AutoRouterOptions, NodeStatInfo, ParsedAutoRouterOptions, ResolvedGlob } from '@/types';
 import type { FileWatcher } from './watcher';
 import { resolveOptions } from './option';
 import { initTemp } from './temp';
 import { resolveGlobs } from './glob';
+import { getNodeStatInfo, resolveNodes } from './node';
 
 /**
  * Auto router class for generating routes automatically
@@ -15,6 +16,13 @@ export class AutoRouter {
   watcher?: FileWatcher;
 
   globs: ResolvedGlob[] = [];
+
+  nodes: AutoRouterNode[] = [];
+
+  statInfo: NodeStatInfo = {
+    add: [],
+    rename: []
+  };
 
   /**
    * Create an AutoRouter instance
@@ -37,7 +45,6 @@ export class AutoRouter {
    * @param generate - Whether to generate routes immediately
    */
   init(options?: AutoRouterOptions, generate = false) {
-    // eslint-disable-next-line no-underscore-dangle
     this.options = resolveOptions(options);
 
     if (generate) {
@@ -54,6 +61,14 @@ export class AutoRouter {
     this.globs = await resolveGlobs(this.options);
   }
 
+  initNodes() {
+    this.nodes = resolveNodes(this.globs, this.options);
+  }
+
+  async initStatInfo() {
+    this.statInfo = await getNodeStatInfo(this.options.cwd, this.nodes);
+  }
+
   /**
    * Generate routes based on file system
    *
@@ -63,5 +78,9 @@ export class AutoRouter {
     await initTemp(this.options.cwd);
 
     await this.initGlobs();
+
+    this.initNodes();
+
+    await this.initStatInfo();
   }
 }
