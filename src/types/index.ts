@@ -10,13 +10,13 @@ export interface ResolvedGlob {
    *
    * @default pageDir
    */
-  ParsedAutoRouterOptions: string;
+  pageDir: string;
   /**
    * the glob of the pages
    *
    * 页面 glob
    *
-   * @default '**‍/*.vue'
+   * @default '**‍/*.tsx'
    */
   glob: string;
   /**
@@ -182,7 +182,7 @@ export interface AutoRouterOptions {
    *
    * 页面目录
    *
-   * @default "['src/views']"
+   * @default "['src/pages']"
    */
   pageDir?: MaybeArray<string>;
   /**
@@ -206,17 +206,17 @@ export interface AutoRouterOptions {
    *
    * 生成的路由类型声明文件路径
    *
-   * @default 'src/typings/elegant-router.d.ts'
+   * @default 'src/types/skyroc-router.d.ts'
    */
   dts?: string;
   /**
-   * the path of the vue-router dts file
+   * the path of the react-router dts file
    *
-   * vue-router 类型声明文件路径
+   * react-router 类型声明文件路径
    *
    * @default 'src/typings/typed-router.d.ts'
    */
-  vueRouterDts?: string;
+  reactRouterDts?: string;
   /**
    * the path of the tsconfig file
    *
