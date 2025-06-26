@@ -2,6 +2,7 @@ import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { ensureFile } from '@/shared';
+import type { NodeItemBackup } from '@/types';
 
 const GIT_IGNORE = '.gitignore';
 const TEMP_DIR = '.temp';
@@ -138,4 +139,28 @@ function getExcludeGlobPath(cwd: string) {
  */
 function getNodeBackupPath(cwd: string) {
   return path.resolve(cwd, TEMP_DIR, NODE_BACKUP);
+}
+
+/**
+ * Get node backup data from backup file
+ *
+ * 从备份文件中获取节点备份数据
+ *
+ * @param cwd - The current working directory
+ * @returns The node backup data object, returns empty object if file doesn't exist or parsing fails
+ */
+export async function getNodeBackup(cwd: string) {
+  const nodeBackupPath = getNodeBackupPath(cwd);
+
+  const content = await readFile(nodeBackupPath, 'utf-8');
+
+  let backup: Record<string, NodeItemBackup> = {};
+
+  try {
+    backup = JSON.parse(content);
+  } catch {
+    backup = {};
+  }
+
+  return backup;
 }
