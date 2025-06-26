@@ -1,0 +1,29 @@
+{
+  "name": "skyroc-router",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "A plugin to create router elegantly",
+  "author": {
+    "name": "OHH",
+    "email": "1509326222@qq.com",
+    "url": "https://github.com/Ohh-889"
+  },
+  "license": "ISC",
+  "keywords": [],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@soybeanjs/eslint-config": "1.6.1",
+    "@types/node": "24.0.4",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "eslint-plugin-react-refresh": "0.4.20",
+    "typescript": "5.8.3"
+  }
+}
