@@ -19,10 +19,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "chokidar": "^4.0.3",
-    "consola": "^3.4.2",
-    "kolorist": "^1.8.0",
-    "unplugin-utils": "^0.2.4"
+    "chokidar": "4.0.3",
+    "consola": "3.4.2",
+    "kolorist": "1.8.0",
+    "tinyglobby": "0.2.14",
+    "unplugin-utils": "0.2.4"
   },
   "devDependencies": {
     "@soybeanjs/eslint-config": "1.6.1",
