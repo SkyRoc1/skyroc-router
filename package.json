@@ -2,7 +2,7 @@
   "name": "skyroc-router",
   "type": "module",
   "version": "0.0.1",
-  "description": "A plugin to create router elegantly",
+  "description": "A plugin to auto create react-router elegantly",
   "author": {
     "name": "OHH",
     "email": "1509326222@qq.com",
