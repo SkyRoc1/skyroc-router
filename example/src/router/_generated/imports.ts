@@ -17,7 +17,7 @@ export const views: Record<RouteFileKey, RawRouteComponent> = {
   AboutDetailIdUserId: () => import("@/pages/about/detail_[id]_[userId].tsx"),
   AboutDetailProjectPid: () => import("@/pages/about/detail/project/[pid].tsx"),
   Home: () => import("@/pages/(base)/home/index.tsx"),
-  Home-[...all]: () => import("@/pages/(base)/home/[...all].tsx"),
+  HomeNotFound: () => import("@/pages/(base)/home/[...all].tsx"),
   ProjectPid: () => import("@/pages/project/[pid]/index.tsx"),
   ProjectPidEditId: () => import("@/pages/project/[pid]/edit/[id].tsx"),
 };

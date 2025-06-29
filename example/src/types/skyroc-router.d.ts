@@ -27,10 +27,10 @@ declare module "@skyroc-router/types" {
     "AboutDetailIdUserId": "/about/detail/:id/:userId";
     "AboutDetailProjectPid": "/about/detail/project/:pid";
     "Home": "/home";
-    "Home-[...all]": "/home/[...all]";
     "HomeError": "/home/error";
     "HomeLayout": "/home/layout";
     "HomeLoading": "/home/loading";
+    "HomeNotFound": "/home/*";
     "ProjectPid": "/project/:pid";
     "ProjectPidEditId": "/project/:pid/edit/:id";
   };

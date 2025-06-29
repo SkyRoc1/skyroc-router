@@ -30,10 +30,10 @@ declare module "react-router/auto-routes" {
     "AboutDetailIdUserId": RouteRecordInfo<"AboutDetailIdUserId", "/about/detail/:id/:userId", { id: ParamValue<true>, userId: ParamValue<true> }, { id: ParamValue<false>, userId: ParamValue<false> }>;
     "AboutDetailProjectPid": RouteRecordInfo<"AboutDetailProjectPid", "/about/detail/project/:pid", { pid: ParamValue<true> }, { pid: ParamValue<false> }>;
     "Home": RouteRecordInfo<"Home", "/home", Record<never, never>, Record<never, never>>;
-    "Home-[...all]": RouteRecordInfo<"Home-[...all]", "/home/[...all]", Record<never, never>, Record<never, never>>;
     "HomeError": RouteRecordInfo<"HomeError", "/home/error", Record<never, never>, Record<never, never>>;
     "HomeLayout": RouteRecordInfo<"HomeLayout", "/home/layout", Record<never, never>, Record<never, never>>;
     "HomeLoading": RouteRecordInfo<"HomeLoading", "/home/loading", Record<never, never>, Record<never, never>>;
+    "HomeNotFound": RouteRecordInfo<"HomeNotFound", "/home/*", Record<never, never>, Record<never, never>>;
     "ProjectPid": RouteRecordInfo<"ProjectPid", "/project/:pid", { pid: ParamValue<true> }, { pid: ParamValue<false> }>;
     "ProjectPidEditId": RouteRecordInfo<"ProjectPidEditId", "/project/:pid/edit/:id", { pid: ParamValue<true>, id: ParamValue<true> }, { pid: ParamValue<false>, id: ParamValue<false> }>
   }
