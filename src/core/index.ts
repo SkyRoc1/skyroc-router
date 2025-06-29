@@ -1,9 +1,14 @@
+import type { ViteDevServer } from 'vite';
 import type { AutoRouterNode, AutoRouterOptions, NodeStatInfo, ParsedAutoRouterOptions, ResolvedGlob } from '@/types';
-import type { FileWatcher } from './watcher';
+import { FileWatcher } from './watcher';
 import { resolveOptions } from './option';
-import { initTemp } from './temp';
+import { initTemp, isInExcludeGlob, updateNodeBackup } from './temp';
 import { resolveGlobs } from './glob';
 import { getNodeStatInfo, resolveNodes } from './node';
+import { generateDtsFile } from './dts';
+import { generateImportsFile } from './import';
+import { generateSharedFile, generateTransformerFile } from './generate';
+import { generateRoutes } from './route';
 
 /**
  * Auto router class for generating routes automatically
@@ -18,6 +23,8 @@ export class AutoRouter {
   globs: ResolvedGlob[] = [];
 
   nodes: AutoRouterNode[] = [];
+
+  viteServer?: ViteDevServer;
 
   statInfo: NodeStatInfo = {
     add: [],
@@ -34,6 +41,10 @@ export class AutoRouter {
    */
   constructor(options?: AutoRouterOptions, generate = false) {
     this.init(options, generate);
+  }
+
+  getOptions() {
+    return this.options;
   }
 
   /**
@@ -53,20 +64,48 @@ export class AutoRouter {
   }
 
   /**
+   * Get configurable nodes
+   *
+   * 获取可配置节点
+   *
+   * @returns The configurable nodes
+   */
+  getConfigurableNodes() {
+    return this.nodes.filter(node => !node.isBuiltin);
+  }
+
+  /**
+   * Update the router options
+   *
+   * 更新路由选项
+   *
+   * @param options - The options to update
+   */
+  updateOptions(options: Partial<ParsedAutoRouterOptions>) {
+    this.options = Object.assign(this.options, options);
+  }
+
+  /**
    * Initialize route globs from file system
    *
    * 从文件系统初始化路由 globs
    */
   async initGlobs() {
     this.globs = await resolveGlobs(this.options);
+
+    // console.log('globs', this.globs);
   }
 
   initNodes() {
     this.nodes = resolveNodes(this.globs, this.options);
+
+    console.log('nodes', this.nodes);
   }
 
   async initStatInfo() {
     this.statInfo = await getNodeStatInfo(this.options.cwd, this.nodes);
+
+    // console.log('statInfo', this.statInfo);
   }
 
   /**
@@ -82,5 +121,44 @@ export class AutoRouter {
     this.initNodes();
 
     await this.initStatInfo();
+
+    await generateDtsFile(this.nodes, this.options);
+
+    await generateImportsFile(this.nodes, this.options);
+
+    await generateTransformerFile(this.options);
+
+    await generateSharedFile(this.nodes, this.options);
+
+    await generateRoutes(this.nodes, this.statInfo, this.options);
+
+    await updateNodeBackup(this.options.cwd, this.nodes);
+  }
+
+  stopWatch() {
+    this.watcher?.close();
+  }
+
+  async watch() {
+    this.watcher = new FileWatcher(this.options);
+    this.watcher?.start(async glob => {
+      const isInExclude = await isInExcludeGlob(this.options.cwd, glob);
+
+      if (isInExclude) return;
+
+      await this.generate();
+    });
+  }
+
+  reloadViteServer() {
+    this.viteServer?.ws?.send({ type: 'full-reload', path: '*' });
+  }
+
+  setViteServer(server: ViteDevServer) {
+    this.viteServer = server;
+
+    this.viteServer.httpServer?.on('close', () => {
+      this.stopWatch();
+    });
   }
 }

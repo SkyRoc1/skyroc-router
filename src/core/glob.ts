@@ -18,30 +18,21 @@ export async function resolveGlobs(options: ParsedAutoRouterOptions) {
 
   const pageDirs = Array.isArray(pageDir) ? pageDir : [pageDir];
 
-  const pageGlobs = pageDirs.flatMap(dir => {
-    const $pageDir = path.resolve(cwd, dir);
+  const pageGlobs = await Promise.all(
+    pageDirs.flatMap(dir => {
+      const $pageDir = path.resolve(cwd, dir);
 
-    const globs = globSync(pageInclude, {
-      cwd: $pageDir,
-      onlyFiles: true,
-      ignore: pageExclude
-    });
+      const globs = globSync(pageInclude, {
+        cwd: $pageDir,
+        onlyFiles: true,
+        ignore: pageExclude
+      });
 
-    return globs.map(glob => resolveGlob(glob, dir, options));
-  });
-
-  const globs: ResolvedGlob[] = await Promise.all(
-    pageGlobs.map(async glob => {
-      const info = await stat(glob.filePath);
-
-      return {
-        ...glob,
-        inode: info.ino
-      };
+      return globs.map(async glob => await resolveGlob(glob, dir, options));
     })
   );
 
-  return globs;
+  return pageGlobs;
 }
 
 /**
@@ -54,7 +45,11 @@ export async function resolveGlobs(options: ParsedAutoRouterOptions) {
  * @param options - The options containing cwd and alias configuration
  * @returns The resolved glob object without inode information
  */
-export function resolveGlob(glob: string, pageDir: string, options: Pick<ParsedAutoRouterOptions, 'cwd' | 'alias'>) {
+export async function resolveGlob(
+  glob: string,
+  pageDir: string,
+  options: Pick<ParsedAutoRouterOptions, 'cwd' | 'alias'>
+) {
   const { cwd, alias } = options;
 
   const $pageDir = path.resolve(cwd, pageDir);
@@ -62,9 +57,12 @@ export function resolveGlob(glob: string, pageDir: string, options: Pick<ParsedA
   const filePath = normalizePath(path.resolve($pageDir, glob));
   const importPath = resolveImportPath(filePath, alias);
 
-  const resolvedGlob: Omit<ResolvedGlob, 'inode'> = {
+  const info = await stat(filePath);
+
+  const resolvedGlob = {
     pageDir,
     glob,
+    inode: info.ino,
     filePath,
     importPath
   };
