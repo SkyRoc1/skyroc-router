@@ -162,6 +162,14 @@ export interface AutoRouterOptions {
    */
   watchFile?: boolean;
   /**
+   * the alias of the splats
+   *
+   * 通配符别名
+   *
+   * @default 'splats'
+   */
+  splatsAlias?: string;
+  /**
    * the duration of the file update
    *
    * 文件更新时间
@@ -182,7 +190,7 @@ export interface AutoRouterOptions {
    *
    * 页面 glob
    *
-   * @default '**‍/*.vue'
+   * @default '**‍/*.tsx'
    */
   pageInclude?: MaybeArray<string>;
   /**
@@ -352,3 +360,7 @@ export interface AutoRouterRedirect extends RouteRecordRedirect {
 }
 
 export type AutoRouterRoute = AutoRouterSingleView | AutoRouterRedirect;
+
+export type FsTreeNode = AutoRouterNode & {
+  children?: FsTreeNode[];
+};
