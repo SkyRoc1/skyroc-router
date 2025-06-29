@@ -13,16 +13,25 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": ["./dist/*", "./*"]
+    }
+  },
+  "files": ["dist"],
   "scripts": {
     "lint": "eslint . --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "stub": "unbuild --stub"
   },
   "dependencies": {
     "chokidar": "4.0.3",
     "consola": "3.4.2",
     "kolorist": "1.8.0",
     "tinyglobby": "0.2.14",
+    "unconfig": "7.3.2",
     "unplugin-utils": "0.2.4"
   },
   "devDependencies": {
@@ -31,6 +40,9 @@
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-react-refresh": "0.4.20",
-    "typescript": "5.8.3"
+    "ts-morph": "26.0.0",
+    "typescript": "5.8.3",
+    "unbuild": "3.5.0",
+    "vite": "7.0.0"
   }
 }
