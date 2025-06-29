@@ -114,7 +114,7 @@ export async function getNodeStatInfo(cwd: string, nodes: AutoRouterNode[]) {
  * @returns The resolved router node
  */
 export function resolveNode(resolvedGlob: ResolvedGlob, options: ParsedAutoRouterOptions) {
-  const { getRouteName, getRouteLayout, routeLazy } = options;
+  const { getRouteName, routeLazy } = options;
 
   const resolvedPath = resolveGlobPath(resolvedGlob, options.pageExtension);
 
@@ -128,9 +128,7 @@ export function resolveNode(resolvedGlob: ResolvedGlob, options: ParsedAutoRoute
     get component() {
       return node.name;
     },
-    get layout() {
-      return getRouteLayout(node);
-    },
+
     get importName() {
       return getImportName(node.name);
     },
@@ -179,7 +177,7 @@ function resolveReuseNode(options: ParsedAutoRouterOptions) {
  * @returns Array of builtin nodes
  */
 function createBuiltinNode(options: ParsedAutoRouterOptions) {
-  const { notFoundRouteComponent, getRouteLayout } = options;
+  const { notFoundRouteComponent } = options;
 
   const rootPath = BUILT_IN_ROUTE[ROOT_ROUTE_NAME];
 
@@ -188,7 +186,6 @@ function createBuiltinNode(options: ParsedAutoRouterOptions) {
     name: ROOT_ROUTE_NAME,
     originPath: rootPath,
     component: '',
-    layout: '',
     isBuiltin: true,
     pageDir: '',
     glob: '',
@@ -205,9 +202,7 @@ function createBuiltinNode(options: ParsedAutoRouterOptions) {
     name: NOT_FOUND_ROUTE_NAME,
     originPath: notFoundPath,
     component: notFoundRouteComponent,
-    get layout() {
-      return getRouteLayout(notFoundNode);
-    },
+
     isBuiltin: true,
     pageDir: '',
     glob: '',
@@ -230,7 +225,7 @@ function createBuiltinNode(options: ParsedAutoRouterOptions) {
  * @returns The empty reuse node
  */
 function createEmptyReuseNode(path: string, options: ParsedAutoRouterOptions) {
-  const { getRouteName, getRouteLayout } = options;
+  const { getRouteName } = options;
 
   let node: AutoRouterNode = {
     path,
@@ -239,9 +234,7 @@ function createEmptyReuseNode(path: string, options: ParsedAutoRouterOptions) {
     },
     originPath: path,
     component: '',
-    get layout() {
-      return getRouteLayout(node);
-    },
+
     isReuse: true,
     pageDir: '',
     glob: '',

@@ -79,14 +79,6 @@ export interface AutoRouterNode extends ResolvedGlob {
    */
   component: string;
   /**
-   * the layout of the route
-   *
-   * 路由布局
-   *
-   * @default get the first key of the layouts
-   */
-  layout: string;
-  /**
    * the group of the route
    *
    * 路由组
@@ -242,25 +234,6 @@ export interface AutoRouterOptions {
    */
   routerGeneratedDir?: string;
   /**
-   * the layouts of the router
-   *
-   * 路由布局
-   *
-   * @default "{
-   *  base: 'src/layouts/base/index.vue',
-   *  blank: 'src/layouts/blank/index.vue',
-   * }"
-   */
-  layouts?: Record<string, string>;
-  /**
-   * the lazy of the layout
-   *
-   * 布局懒加载
-   *
-   * @default true
-   */
-  layoutLazy?: (layout: string) => boolean;
-  /**
    * the routes to reuse
    *
    * 复用已存在文件的路由
@@ -309,14 +282,6 @@ export interface AutoRouterOptions {
    * @default transform the path to the route name
    */
   getRouteName?: (node: AutoRouterNode) => string;
-  /**
-   * the layout of the route
-   *
-   * 路由布局
-   *
-   * @default get the first key of the layouts
-   */
-  getRouteLayout?: (node: AutoRouterNode) => string;
   /**
    * the lazy of the route
    *
@@ -373,9 +338,8 @@ export interface NormalizedLayout {
   isLazy: boolean;
 }
 
-export type ParsedAutoRouterOptions = Omit<Required<AutoRouterOptions>, 'layouts' | 'layoutLazy'> & {
+export type ParsedAutoRouterOptions = Required<AutoRouterOptions> & {
   pageExtension: string[];
-  layouts: NormalizedLayout[];
 };
 
 export interface AutoRouterSingleView extends Omit<RouteRecordSingleView, 'component'> {
