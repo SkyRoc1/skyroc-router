@@ -15,6 +15,8 @@ export function resolveOptions(options?: AutoRouterOptions): ParsedAutoRouterOpt
   const cwd = process.cwd();
   const alias = resolveAliasFromTsConfig(cwd, 'tsconfig.json');
 
+  const splatsAlias = 'splats';
+
   const defaultOptions: Required<AutoRouterOptions> = {
     cwd,
     watchFile: true,
@@ -29,10 +31,11 @@ export function resolveOptions(options?: AutoRouterOptions): ParsedAutoRouterOpt
     routerGeneratedDir: 'src/router/_generated',
     reuseRoutes: [],
     defaultReuseRouteComponent: 'Wip',
+    splatsAlias,
     rootRedirect: '/home',
     notFoundRouteComponent: '404',
     getRoutePath: node => node.path,
-    getRouteName: node => transformPathToName(node.path),
+    getRouteName: node => transformPathToName(node.path, splatsAlias),
     routeLazy: () => true,
     getRouteMeta: () => null
   };
@@ -42,6 +45,7 @@ export function resolveOptions(options?: AutoRouterOptions): ParsedAutoRouterOpt
   const pageInclude = Array.isArray(restOptions.pageInclude) ? restOptions.pageInclude : [restOptions.pageInclude];
 
   restOptions.cwd = normalizePath(restOptions.cwd);
+  restOptions.splatsAlias ||= splatsAlias;
   restOptions.defaultReuseRouteComponent = pascalCase(restOptions.defaultReuseRouteComponent);
   restOptions.notFoundRouteComponent = pascalCase(restOptions.notFoundRouteComponent);
 

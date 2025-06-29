@@ -62,8 +62,15 @@ export function getImportName(name: string) {
  * @param path - The file path to transform
  * @returns The transformed route name in PascalCase format
  */
-export function transformPathToName(path: string) {
-  const $path = path.replaceAll(':', '').replaceAll('?', '');
+export function transformPathToName(path: string, splatsAlias: string) {
+  let cleanPath = path.replaceAll(':', '').replaceAll('?', '');
 
-  return pascalCase($path.split('/').join('-'));
+  // 如果以 "/*" 结尾，则替换为 "-splats"
+  if (cleanPath.endsWith('/*')) {
+    cleanPath = `${cleanPath.slice(0, -2)}-${splatsAlias}`;
+  }
+
+  // 将 '/' 转为 '-' 并转成 PascalCase
+  const kebab = cleanPath.split('/').filter(Boolean).join('-');
+  return pascalCase(kebab);
 }
