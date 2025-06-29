@@ -17,6 +17,9 @@ importers:
       kolorist:
         specifier: 1.8.0
         version: 1.8.0
+      strip-json-comments:
+        specifier: 5.0.2
+        version: 5.0.2
       tinyglobby:
         specifier: 0.2.14
         version: 0.2.14
@@ -43,7 +46,7 @@ importers:
         specifier: 0.4.20
         version: 0.4.20(eslint@9.29.0(jiti@2.4.2))
       ts-morph:
-        specifier: ^26.0.0
+        specifier: 26.0.0
         version: 26.0.0
       typescript:
         specifier: 5.8.3
@@ -2511,6 +2514,10 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
+
+  strip-json-comments@5.0.2:
+    resolution: {integrity: sha512-4X2FR3UwhNUE9G49aIsJW5hRRR3GXGTBTZRMfv568O60ojM8HcWjV/VxAxCDW3SUND33O6ZY66ZuRcdkj73q2g==}
+    engines: {node: '>=14.16'}
 
   stylehacks@7.0.5:
     resolution: {integrity: sha512-5kNb7V37BNf0Q3w+1pxfa+oiNPS++/b4Jil9e/kPDgrk1zjEd6uR7SZeJiYaLYH6RRSC1XX2/37OTeU/4FvuIA==}
@@ -5342,6 +5349,8 @@ snapshots:
       min-indent: 1.0.1
 
   strip-json-comments@3.1.1: {}
+
+  strip-json-comments@5.0.2: {}
 
   stylehacks@7.0.5(postcss@8.5.6):
     dependencies:
