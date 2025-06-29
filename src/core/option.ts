@@ -15,7 +15,7 @@ export function resolveOptions(options?: AutoRouterOptions): ParsedAutoRouterOpt
   const cwd = process.cwd();
   const alias = resolveAliasFromTsConfig(cwd, 'tsconfig.json');
 
-  const splatsAlias = 'splats';
+  const splatsAlias = 'NotFound';
 
   const defaultOptions: Required<AutoRouterOptions> = {
     cwd,

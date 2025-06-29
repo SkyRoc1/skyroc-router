@@ -1,6 +1,6 @@
 import { yellow } from 'kolorist';
 import { getImportName, logger } from '../shared';
-import { BUILT_IN_ROUTE, NOT_FOUND_ROUTE_NAME, NO_FILE_INODE, ROOT_ROUTE_NAME } from '../constants';
+import { BUILT_IN_ROUTE, INDEX_FILE_REG, NOT_FOUND_ROUTE_NAME, NO_FILE_INODE, ROOT_ROUTE_NAME } from '../constants';
 import type {
   AutoRouterNode,
   AutoRouterParamType,
@@ -273,7 +273,7 @@ function resolveGlobPath(resolvedGlob: ResolvedGlob, extension: string[]) {
   });
 
   if (globPath.endsWith('/index')) {
-    globPath = globPath.replace(/\/index$/, '');
+    globPath = globPath.replace(INDEX_FILE_REG, '');
   }
 
   return globPath;
@@ -310,7 +310,10 @@ function resolveGroupNode(node: AutoRouterNode) {
  * 从路径模式解析参数节点
  *
  * @example
- *   `src/pages/list/[id].vue``src/pages/list/[[id]].vue``src/pages/list/edit_[id]_[userId].vue``src/pages/list/detail/[id]/[userId].vue`;
+ *   `src/pages/list/[id].vue`;
+ *   `src/pages/list/[[id]].vue`;
+ *   `src/pages/list/edit_[id]_[userId].vue`;
+ *   `src/pages/list/detail/[id]/[userId].vue`;
  *
  * @param node - The router node to resolve
  * @returns The resolved node with parameter information
@@ -366,6 +369,15 @@ function getParamsFromRoutePath(nodePath: string) {
  * @returns The optional parameters and modified path
  */
 function getOptionalParamsByPath(nodePath: string) {
+  // 1. 处理 catch-all 路由 [...param]
+  const catchAllReg = /\[\.\.\.(\w+)\]/;
+  const catchMatch = nodePath.match(catchAllReg);
+  if (catchMatch) {
+    const param = catchMatch[1];
+    // 替换末尾 [...param] 为 /*
+    const path = nodePath.replace(/\/\[\.\.\.[^\]]+\]/, '/*');
+    return { params: { [param]: 'required' }, path };
+  }
   const OPTIONAL_PARAM_REG = /\[\[(\w+)\]\]/g;
 
   const match = nodePath.match(OPTIONAL_PARAM_REG);

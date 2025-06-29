@@ -13,5 +13,10 @@ export const BUILT_IN_ROUTE = {
   [NOT_FOUND_ROUTE_NAME]: '*'
 } as const;
 
+export const INDEX_FILE_REG = /\/index$/;
+
+// eslint-disable-next-line no-useless-escape
+export const ALL_PARAMS_REG = /\/[\.\.\.[^\]]+\]$/;
+
 export const CLI_CONFIG_SOURCE = 'skyroc-router.config';
 export const SHORT_CLI_CONFIG_SOURCE = 'sr.config';
